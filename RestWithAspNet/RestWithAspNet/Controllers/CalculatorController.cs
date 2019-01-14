@@ -67,7 +67,7 @@ namespace RestWithAspNet.Controllers
             return BadRequest("Invalid Input");
         }
 
-        // GET api/values/Division/5/5
+        // GET api/values/mean/5/5
         [HttpGet("mean/{firstNumber}/{secondNumber}")]
         public ActionResult<string> Mean(string firstNumber, string secondNumber)
         {
@@ -82,7 +82,7 @@ namespace RestWithAspNet.Controllers
         }
 
         // GET api/values/Division/5/5
-        [HttpGet("mean/{firstNumber}/{secondNumber}")]
+        [HttpGet("squareRoot/{number}")]
         public ActionResult<string> SquareRoot(string number)
         {
             if (IsNumeric(number))
