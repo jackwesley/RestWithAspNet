@@ -4,8 +4,9 @@ using RestWithAspNet.Services;
 
 namespace RestWithAspNet.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1")]
     [ApiController]
+    [Route("api/[controller]/v{version:apiVersion}")]
     public class PersonsController : ControllerBase
     {
         private IPersonService _personService;

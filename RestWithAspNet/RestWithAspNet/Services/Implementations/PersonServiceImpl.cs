@@ -36,7 +36,7 @@ namespace RestWithAspNet.Services.Implementations
             {
                 return _context.Persons.SingleOrDefault(x => x.Id == id);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
