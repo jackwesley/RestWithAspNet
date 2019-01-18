@@ -5,5 +5,5 @@ CREATE TABLE `persons` (
 	`Adress` VARCHAR(50) NULL DEFAULT NULL,
 	`Gender` VARCHAR(50) NULL DEFAULT NULL
 )
-COLLATE='utf8mb4_0900_ai_ci'
 ENGINE=InnoDB
+;

@@ -1,43 +1,71 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using RestWithAspNet.Model.Context;
-using RestWithAspNet.Services;
-using RestWithAspNet.Services.Implementations;
 using Microsoft.EntityFrameworkCore;
+using RestWithAspNet.Business;
+using RestWithAspNet.Business.Implementations;
+using RestWithAspNet.Repository;
+using RestWithAspNet.Repository.Implementations;
+using x = MySql.Data.MySqlClient;
+using System.Collections.Generic;
 
 namespace RestWithAspNet
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration Configuration { get; }
+
+        private readonly ILogger _logger;
+        public IHostingEnvironment _environment { get; }
+
+        public Startup(IConfiguration configuration, IHostingEnvironment environment, ILoggerFactory logger)
         {
             Configuration = configuration;
-
+            _environment = environment;
+            _logger = logger.CreateLogger<Startup>();
         }
 
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = Configuration["MySqlConnection:MySqlConnectionString"];
-            services.AddDbContext<MySqlContext>(options => options.UseMySql(connection));
+            var connectionString = Configuration["MySqlConnection:MySqlConnectionString"];
+            services.AddDbContext<MySqlContext>(options => options.UseMySql(connectionString));
+
+            if (_environment.IsDevelopment())
+            {
+                try
+                {
+                    var evolveConnection = new x.MySqlConnection(connectionString);
+                    var evolve = new Evolve.Evolve("evolve.json", evolveConnection, msg => _logger.LogInformation(msg))
+                    { 
+                        Locations = new List<string> { "db/migrations"},
+                        IsEraseDisabled = true
+                    };
+
+                    evolve.Migrate();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogCritical("Database migration failed", ex);
+                    throw;
+                }
+            }
+
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddApiVersioning();
 
 
             //Dependency Injection
-            services.AddScoped<IPersonService, PersonServiceImpl>();
+            services.AddScoped<IPersonBusiness, PersonServiceImpl>();
+            services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<MySqlContext, MySqlContext>();
         }
 

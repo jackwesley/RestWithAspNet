@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
+using System.Threading.Tasks;
 using RestWithAspNet.Model;
 using RestWithAspNet.Model.Context;
 
-namespace RestWithAspNet.Services.Implementations
+namespace RestWithAspNet.Repository.Implementations
 {
-    public class PersonServiceImpl : IPersonService
+    public class PersonRepository : IPersonRepository
     {
         private MySqlContext _context;
 
-        public PersonServiceImpl(MySqlContext context)
+        public PersonRepository(MySqlContext context)
         {
             _context = context;
         }
@@ -45,7 +45,7 @@ namespace RestWithAspNet.Services.Implementations
 
         public Person Update(Person person)
         {
-            if (!Exists(person.Id)) return new Person();
+            if (!Exists(person.Id)) return null;
 
             var result = _context.Persons.SingleOrDefault(x => x.Id.Equals(person.Id));
             try
@@ -61,7 +61,7 @@ namespace RestWithAspNet.Services.Implementations
             return person;
         }
 
-        private bool Exists(long? id)
+        public bool Exists(long? id)
         {
             return id == null ? false : _context.Persons.Any(x => x.Id == id);
         }
@@ -74,17 +74,22 @@ namespace RestWithAspNet.Services.Implementations
         public void Delete(long id)
         {
 
-           var result = _context.Persons.SingleOrDefault(x => x.Id.Equals(id));
+            var result = _context.Persons.SingleOrDefault(x => x.Id.Equals(id));
             try
             {
-                if(result != null)
-                _context.Persons.Remove(result);
+                if (result != null)
+                    _context.Persons.Remove(result);
                 _context.SaveChanges();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+        }
+
+        public int Save()
+        {
+            return _context.SaveChanges();
         }
     }
 }
