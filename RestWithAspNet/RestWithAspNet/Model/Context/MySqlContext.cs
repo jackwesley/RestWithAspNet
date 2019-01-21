@@ -9,6 +9,7 @@ namespace RestWithAspNet.Model.Context
     public class MySqlContext : DbContext
     {
         public DbSet<Person> Persons { get; set; }
+        public DbSet<Book> Books { get; set; }
 
 
         public MySqlContext()

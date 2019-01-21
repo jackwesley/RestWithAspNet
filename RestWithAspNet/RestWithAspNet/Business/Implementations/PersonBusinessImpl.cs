@@ -8,11 +8,11 @@ using RestWithAspNet.Repository;
 
 namespace RestWithAspNet.Business.Implementations
 {
-    public class PersonServiceImpl : IPersonBusiness
+    public class PersonBusinessImpl : IPersonBusiness
     {
         private IPersonRepository _personRepository;
 
-        public PersonServiceImpl(IPersonRepository personRepository)
+        public PersonBusinessImpl(IPersonRepository personRepository)
         {
             _personRepository = personRepository;
         }

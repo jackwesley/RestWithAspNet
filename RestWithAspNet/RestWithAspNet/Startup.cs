@@ -13,6 +13,7 @@ using RestWithAspNet.Repository;
 using RestWithAspNet.Repository.Implementations;
 using x = MySql.Data.MySqlClient;
 using System.Collections.Generic;
+using RestWithAspNet.Repository.Generic;
 
 namespace RestWithAspNet
 {
@@ -64,9 +65,10 @@ namespace RestWithAspNet
 
 
             //Dependency Injection
-            services.AddScoped<IPersonBusiness, PersonServiceImpl>();
+            services.AddScoped<IPersonBusiness, PersonBusinessImpl>();
+            services.AddScoped<IBookBusiness, BookBusinessImpl>();
             services.AddScoped<IPersonRepository, PersonRepository>();
-            services.AddScoped<MySqlContext, MySqlContext>();
+            services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
