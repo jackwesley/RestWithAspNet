@@ -4,12 +4,9 @@ using System.Runtime.Serialization;
 
 namespace RestWithAspNet.Model.Base
 {
-   // [DataContract]
+    // [DataContract]
     public class BaseEntity
     {
-        [Key]
-        [Column("Id")]
-        public long Id { get; set; }
-
+        public long? Id { get; set; }
     }
 }

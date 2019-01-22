@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestWithAspNet.Model;
 using RestWithAspNet.Business;
+using RestWithAspNet.Repository.Generic;
+using RestWithAspNet.Data.VO;
 
 namespace RestWithAspNet.Controllers
 {
@@ -13,7 +15,7 @@ namespace RestWithAspNet.Controllers
 
         public PersonsController(IPersonBusiness personBusiness)
         {
-            _personBusiness = personBusiness;
+           _personBusiness = personBusiness;
         }
 
         // GET api/values
@@ -36,7 +38,7 @@ namespace RestWithAspNet.Controllers
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post([FromBody] Person person)
+        public IActionResult Post([FromBody] PersonVO person)
         {
             if (person == null)
                 return BadRequest();
@@ -47,7 +49,7 @@ namespace RestWithAspNet.Controllers
 
         // PUT api/values/5
         [HttpPut]
-        public IActionResult Put([FromBody] Person person)
+        public IActionResult Put([FromBody] PersonVO person)
         {
             if (person == null)
                 return BadRequest();

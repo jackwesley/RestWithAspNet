@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RestWithAspNet.Business;
+using RestWithAspNet.Data.VO;
 using RestWithAspNet.Model;
 using RestWithAspNet.Model.Base;
 
@@ -41,7 +42,7 @@ namespace RestWithAspNet.Controllers
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post([FromBody] Book book)
+        public IActionResult Post([FromBody] BookVO book)
         {
             if (book == null)
                 return BadRequest();
@@ -51,7 +52,7 @@ namespace RestWithAspNet.Controllers
 
         // PUT api/values/5
         [HttpPut]
-        public IActionResult Put([FromBody] Book book)
+        public IActionResult Put([FromBody] BookVO book)
         {
             if (book == null)
                 return BadRequest();
