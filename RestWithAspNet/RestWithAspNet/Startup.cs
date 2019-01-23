@@ -14,6 +14,7 @@ using RestWithAspNet.Repository.Implementations;
 using x = MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using RestWithAspNet.Repository.Generic;
+using Microsoft.Net.Http.Headers;
 
 namespace RestWithAspNet
 {
@@ -44,8 +45,8 @@ namespace RestWithAspNet
                 {
                     var evolveConnection = new x.MySqlConnection(connectionString);
                     var evolve = new Evolve.Evolve("evolve.json", evolveConnection, msg => _logger.LogInformation(msg))
-                    { 
-                        Locations = new List<string> { "db/migrations"},
+                    {
+                        Locations = new List<string> { "db/migrations" },
                         IsEraseDisabled = true
                     };
 
@@ -59,7 +60,14 @@ namespace RestWithAspNet
             }
 
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(opt =>
+                {
+                    opt.RespectBrowserAcceptHeader = true;
+                    opt.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("text/xml"));
+                    opt.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("application/json"));
+                })
+                .AddXmlSerializerFormatters()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddApiVersioning();
 
