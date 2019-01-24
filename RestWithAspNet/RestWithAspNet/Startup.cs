@@ -15,6 +15,8 @@ using x = MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using RestWithAspNet.Repository.Generic;
 using Microsoft.Net.Http.Headers;
+using Tapioca.HATEOAS;
+using RestWithAspNet.Hypermedia;
 
 namespace RestWithAspNet
 {
@@ -69,13 +71,24 @@ namespace RestWithAspNet
                 .AddXmlSerializerFormatters()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            //Define as opções do filtro HATEOAS
+            var filterOptions = new HyperMediaFilterOptions();
+            filterOptions.ObjectContentResponseEnricherList.Add(new PersonEnricher());
+            filterOptions.ObjectContentResponseEnricherList.Add(new BookEnricher());
+            //Injeta o serviço HATEOAS
+            services.AddSingleton(filterOptions);
+
+
+            //Versionamento
             services.AddApiVersioning();
 
 
             //Dependency Injection
             services.AddScoped<IPersonBusiness, PersonBusinessImpl>();
             services.AddScoped<IBookBusiness, BookBusinessImpl>();
-            services.AddScoped<IPersonRepository, PersonRepository>();
+
+            //Não é necessário mais fazer desta forma as injeções de dep dos repositorios estão na proxima linha não comentada
+            //services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
         }
 
@@ -87,7 +100,13 @@ namespace RestWithAspNet
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "DefaultApi",
+                    template:"{controller=Values}/{id?}"
+                    );
+            });
         }
     }
 }
