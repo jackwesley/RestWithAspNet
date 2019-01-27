@@ -4,6 +4,9 @@ using RestWithAspNet.Business;
 using RestWithAspNet.Repository.Generic;
 using RestWithAspNet.Data.VO;
 using Tapioca.HATEOAS;
+using System.Collections.Generic;
+using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestWithAspNet.Controllers
 {
@@ -22,14 +25,31 @@ namespace RestWithAspNet.Controllers
         // GET api/values
         [HttpGet]
         [TypeFilter(typeof(HyperMediaFilter))]
+        [ProducesResponseType(typeof(List<PersonVO>), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(409)]
+        [ProducesResponseType(429)]
+        [ProducesResponseType(500)]
+        [Authorize("Bearer")]
         public ActionResult Get()
         {
+            
             return Ok(_personBusiness.FindAll());
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
         [TypeFilter(typeof(HyperMediaFilter))]
+        [Authorize("Bearer")]
+        [ProducesResponseType(typeof(PersonVO), 200)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(409)]
+        [ProducesResponseType(429)]
+        [ProducesResponseType(500)]
         public ActionResult<string> Get(long id)
         {
             var person = _personBusiness.FindById(id);
@@ -42,6 +62,13 @@ namespace RestWithAspNet.Controllers
         // POST api/values
         [HttpPost]
         [TypeFilter(typeof(HyperMediaFilter))]
+        [ProducesResponseType(typeof(PersonVO), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(409)]
+        [ProducesResponseType(429)]
+        [ProducesResponseType(500)]
+        [Authorize("Bearer")]
         public IActionResult Post([FromBody] PersonVO person)
         {
             if (person == null)
@@ -54,6 +81,13 @@ namespace RestWithAspNet.Controllers
         // PUT api/values/5
         [HttpPut]
         [TypeFilter(typeof(HyperMediaFilter))]
+        [ProducesResponseType(typeof(PersonVO), 202)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(409)]
+        [ProducesResponseType(429)]
+        [ProducesResponseType(500)]
+        [Authorize("Bearer")]
         public IActionResult Put([FromBody] PersonVO person)
         {
             if (person == null)
@@ -68,6 +102,13 @@ namespace RestWithAspNet.Controllers
         // DELETE api/values/5
         [HttpDelete("{id}")]
         [TypeFilter(typeof(HyperMediaFilter))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(409)]
+        [ProducesResponseType(429)]
+        [ProducesResponseType(500)]
+        [Authorize("Bearer")]
         public IActionResult Delete(int id)
         {
             _personBusiness.Delete(id);
