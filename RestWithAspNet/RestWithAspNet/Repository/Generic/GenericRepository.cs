@@ -10,7 +10,7 @@ namespace RestWithAspNet.Repository.Generic
 {
     public class GenericRepository<T> : IRepository<T> where T : BaseEntity
     {
-        private readonly MySqlContext _context;
+        protected readonly MySqlContext _context;
         private DbSet<T> dataset;
         public GenericRepository(MySqlContext context)
         {
@@ -60,6 +60,16 @@ namespace RestWithAspNet.Repository.Generic
         public T FindById(long id)
         {
             return dataset.SingleOrDefault(x => x.Id == id);
+        }
+
+        public List<T> FindWithPagedSearch(string query)
+        {
+            return dataset.FromSql<T>(query).ToList();
+        }
+
+        public int GetCount(string query)
+        {
+            return dataset.FromSql<T>(query).Count();
         }
 
         public T Update(T obj)

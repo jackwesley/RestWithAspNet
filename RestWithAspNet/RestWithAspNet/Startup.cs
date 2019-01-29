@@ -126,6 +126,7 @@ namespace RestWithAspNet
             services.AddScoped<IBookBusiness, BookBusinessImpl>();
             services.AddScoped<ILoginBusiness, LoginBusinessImpl>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPersonRepository, PersonRepository>();
 
             //Não é necessário mais fazer desta forma as injeções de dep dos repositorios estão na proxima linha não comentada
             //services.AddScoped<IPersonRepository, PersonRepository>();

@@ -25,6 +25,12 @@ namespace RestWithAspNet.Controllers
 
         // GET api/values
         [HttpGet]
+        [ProducesResponseType(typeof(List<BookVO>), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(409)]
+        [ProducesResponseType(429)]
+        [ProducesResponseType(500)]
         [TypeFilter(typeof(HyperMediaFilter))]
         public ActionResult Get()
         {
@@ -33,6 +39,12 @@ namespace RestWithAspNet.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(BookVO), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(409)]
+        [ProducesResponseType(429)]
+        [ProducesResponseType(500)]
         [TypeFilter(typeof(HyperMediaFilter))]
         public ActionResult<string> Get(long id)
         {
@@ -46,6 +58,12 @@ namespace RestWithAspNet.Controllers
         // POST api/values
         [HttpPost]
         [TypeFilter(typeof(HyperMediaFilter))]
+        [ProducesResponseType(typeof(BookVO), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(409)]
+        [ProducesResponseType(429)]
+        [ProducesResponseType(500)]
         public IActionResult Post([FromBody] BookVO book)
         {
             if (book == null)
@@ -57,7 +75,33 @@ namespace RestWithAspNet.Controllers
         // PUT api/values/5
         [HttpPut]
         [TypeFilter(typeof(HyperMediaFilter))]
+        [ProducesResponseType(typeof(BookVO), 202)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(409)]
+        [ProducesResponseType(429)]
+        [ProducesResponseType(500)]
         public IActionResult Put([FromBody] BookVO book)
+        {
+            if (book == null)
+                return BadRequest();
+            var response = _bookBusiness.Update(book);
+            if (response == null)
+                return NoContent();
+
+            return new ObjectResult(response);
+        }
+
+        // Patch api/values/5
+        [HttpPatch]
+        [TypeFilter(typeof(HyperMediaFilter))]
+        [ProducesResponseType(typeof(BookVO), 202)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(409)]
+        [ProducesResponseType(429)]
+        [ProducesResponseType(500)]
+        public IActionResult Patch([FromBody] BookVO book)
         {
             if (book == null)
                 return BadRequest();
@@ -71,6 +115,12 @@ namespace RestWithAspNet.Controllers
         // DELETE api/values/5
         [HttpDelete("{id}")]
         [TypeFilter(typeof(HyperMediaFilter))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(409)]
+        [ProducesResponseType(429)]
+        [ProducesResponseType(500)]
         public IActionResult Delete(int id)
         {
             _bookBusiness.Delete(id);

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestWithAspNet.Business;
+using RestWithAspNet.Data.VO;
 using RestWithAspNet.Model;
 using Tapioca.HATEOAS;
 
@@ -25,7 +26,7 @@ namespace RestWithAspNet.Controllers
         // POST api/values
         [AllowAnonymous]
         [HttpPost]  
-        public IActionResult Post([FromBody] User user)
+        public IActionResult Post([FromBody] UserVO user)
         {
             if (user == null)
                 return BadRequest();

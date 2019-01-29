@@ -1,4 +1,5 @@
-﻿using RestWithAspNet.Model;
+﻿using RestWithAspNet.Data.VO;
+using RestWithAspNet.Model;
 using RestWithAspNet.Repository;
 using RestWithAspNet.Security.Configuration;
 using System;
@@ -26,7 +27,7 @@ namespace RestWithAspNet.Business.Implementations
             _tokenConfigurations = tokenConfigurations;
         }
 
-        public object FindByLogin(User user)
+        public object FindByLogin(UserVO user)
         {
             bool credentialIsValid = false;
             if (user != null && !String.IsNullOrEmpty(user.Login) && !String.IsNullOrEmpty(user.AccessKey))

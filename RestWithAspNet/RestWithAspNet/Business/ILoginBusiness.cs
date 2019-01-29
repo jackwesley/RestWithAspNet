@@ -1,4 +1,5 @@
-﻿using RestWithAspNet.Model;
+﻿using RestWithAspNet.Data.VO;
+using RestWithAspNet.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,6 @@ namespace RestWithAspNet.Business
 {
     public interface ILoginBusiness
     {
-        object FindByLogin(User user);
+        object FindByLogin(UserVO user);
     }
 }
